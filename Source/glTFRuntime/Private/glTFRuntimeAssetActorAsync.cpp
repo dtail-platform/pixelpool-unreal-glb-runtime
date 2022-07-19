@@ -121,14 +121,14 @@ void AglTFRuntimeAssetActorAsync::LoadNextMeshAsync()
 			StaticMeshConfig.Outer = StaticMeshComponent;
 		}
 		FglTFRuntimeStaticMeshAsync Delegate;
-		Delegate.BindDynamic(this, &AglTFRuntimeAssetActorAsync::LoadStaticMeshAsync);
+		Delegate.BindUObject(this, &AglTFRuntimeAssetActorAsync::LoadStaticMeshAsync);
 		Asset->LoadStaticMeshAsync(It->Value.MeshIndex, Delegate, StaticMeshConfig);
 	}
 	else if (USkeletalMeshComponent* SkeletalMeshComponent = Cast<USkeletalMeshComponent>(It->Key))
 	{
 		CurrentPrimitiveComponent = SkeletalMeshComponent;
 		FglTFRuntimeSkeletalMeshAsync Delegate;
-		Delegate.BindDynamic(this, &AglTFRuntimeAssetActorAsync::LoadSkeletalMeshAsync);
+		Delegate.BindUObject(this, &AglTFRuntimeAssetActorAsync::LoadSkeletalMeshAsync);
 		Asset->LoadSkeletalMeshAsync(It->Value.MeshIndex, It->Value.SkinIndex, Delegate, SkeletalMeshConfig);
 	}
 }

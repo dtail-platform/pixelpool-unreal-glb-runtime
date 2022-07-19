@@ -1120,8 +1120,8 @@ struct FglTFRuntimeAudioEmitter
 	}
 };
 
-DECLARE_DYNAMIC_DELEGATE_OneParam(FglTFRuntimeStaticMeshAsync, UStaticMesh*, StaticMesh);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FglTFRuntimeSkeletalMeshAsync, USkeletalMesh*, SkeletalMesh);
+DECLARE_DELEGATE_OneParam(FglTFRuntimeSkeletalMeshAsync, USkeletalMesh* /*SkeletalMesh*/);
+DECLARE_DELEGATE_OneParam(FglTFRuntimeStaticMeshAsync, UStaticMesh* /*StaticMesh*/);
 
 /**
  *

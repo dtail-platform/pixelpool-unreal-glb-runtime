@@ -84,6 +84,11 @@ bool UglTFRuntimeAsset::LoadFromData(const uint8* DataPtr, int64 DataNum, const 
 	return Parser != nullptr;
 }
 
+void UglTFRuntimeAsset::ResetParser()
+{
+	Parser.Reset();
+}
+
 void UglTFRuntimeAsset::OnErrorProxy(const FString& ErrorContext, const FString& ErrorMessage)
 {
 	if (OnError.IsBound())
@@ -568,4 +573,10 @@ TArray<FString> UglTFRuntimeAsset::GetExtensionsRequired() const
 {
 	GLTF_CHECK_PARSER(TArray<FString>());
 	return Parser->ExtensionsRequired;
+}
+
+void UglTFRuntimeAsset::BeginDestroy()
+{
+	UE_LOG(LogTemp, Error, TEXT("UglTFRuntimeAsset BeginDestroy"));
+	UObject::BeginDestroy();
 }
