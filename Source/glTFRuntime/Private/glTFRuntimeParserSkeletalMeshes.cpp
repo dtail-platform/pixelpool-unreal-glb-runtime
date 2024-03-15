@@ -37,7 +37,6 @@
 #include "Model.h"
 #include "Animation/MorphTarget.h"
 #include "Animation/AnimCurveTypes.h"
-#include "Engine/SkinnedAssetCommon.h"
 #include "PhysicsEngine/PhysicsAsset.h"
 #include "PhysicsEngine/PhysicsConstraintTemplate.h"
 #include "Engine/SkeletalMeshLODSettings.h"
@@ -46,6 +45,7 @@
 #endif
 
 #if ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION >= 2
+#include "Engine/SkinnedAssetCommon.h"
 #define BONE_INFLUENCE_TYPE uint16
 #define MAX_BONE_INFLUENCE_WEIGHT 0xffff
 #else
