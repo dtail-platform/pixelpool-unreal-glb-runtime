@@ -547,8 +547,8 @@ FglTFRuntimeParser::FglTFRuntimeParser(TSharedRef<FJsonObject> JsonObject, const
 		FTaskGraphInterface::Get().WaitUntilTaskCompletes(Task);
 	}
 
-	JsonObject->TryGetStringArrayField("extensionsUsed", ExtensionsUsed);
-	JsonObject->TryGetStringArrayField("extensionsRequired", ExtensionsRequired);
+	JsonObject->TryGetStringArrayField(StringCast<TCHAR>("extensionsUsed"), ExtensionsUsed);
+	JsonObject->TryGetStringArrayField(StringCast<TCHAR>("extensionsRequired"), ExtensionsRequired);
 
 	if (ExtensionsUsed.Contains("KHR_materials_variants"))
 	{
@@ -556,7 +556,7 @@ FglTFRuntimeParser::FglTFRuntimeParser(TSharedRef<FJsonObject> JsonObject, const
 		for (TSharedRef<FJsonObject> MaterialsVariantsObject : MaterialsVariantsObjects)
 		{
 			FString VariantName;
-			if (MaterialsVariantsObject->TryGetStringField("name", VariantName))
+			if (MaterialsVariantsObject->TryGetStringField(StringCast<TCHAR>("name"), VariantName))
 			{
 				MaterialsVariants.Add(VariantName);
 			}
@@ -586,7 +586,7 @@ bool FglTFRuntimeParser::LoadNodes()
 	const TArray<TSharedPtr<FJsonValue>>* JsonNodes;
 
 	// no nodes ?
-	if (!Root->TryGetArrayField("nodes", JsonNodes))
+	if (!Root->TryGetArrayField(StringCast<TCHAR>("nodes"), JsonNodes))
 	{
 		return false;
 	}
@@ -653,7 +653,7 @@ bool FglTFRuntimeParser::LoadNodesRecursive(const int32 NodeIndex, TArray<FglTFR
 int32 FglTFRuntimeParser::GetNumMeshes() const
 {
 	const TArray<TSharedPtr<FJsonValue>>* JsonArray;
-	if (Root->TryGetArrayField("meshes", JsonArray))
+	if (Root->TryGetArrayField(StringCast<TCHAR>("meshes"), JsonArray))
 	{
 		return JsonArray->Num();
 	}
@@ -663,7 +663,7 @@ int32 FglTFRuntimeParser::GetNumMeshes() const
 int32 FglTFRuntimeParser::GetNumImages() const
 {
 	const TArray<TSharedPtr<FJsonValue>>* JsonArray;
-	if (Root->TryGetArrayField("images", JsonArray))
+	if (Root->TryGetArrayField(StringCast<TCHAR>("images"), JsonArray))
 	{
 		return JsonArray->Num();
 	}
@@ -673,7 +673,7 @@ int32 FglTFRuntimeParser::GetNumImages() const
 int32 FglTFRuntimeParser::GetNumAnimations() const
 {
 	const TArray<TSharedPtr<FJsonValue>>* JsonArray;
-	if (Root->TryGetArrayField("animations", JsonArray))
+	if (Root->TryGetArrayField(StringCast<TCHAR>("animations"), JsonArray))
 	{
 		return JsonArray->Num();
 	}
@@ -684,7 +684,7 @@ bool FglTFRuntimeParser::LoadScenes(TArray<FglTFRuntimeScene>& Scenes)
 {
 	const TArray<TSharedPtr<FJsonValue>>* JsonScenes;
 	// no scenes ?
-	if (!Root->TryGetArrayField("scenes", JsonScenes))
+	if (!Root->TryGetArrayField(StringCast<TCHAR>("scenes"), JsonScenes))
 	{
 		return false;
 	}
@@ -747,7 +747,7 @@ TSharedPtr<FJsonObject> FglTFRuntimeParser::GetJsonObjectFromExtensionIndex(TSha
 	}
 
 	const TSharedPtr<FJsonObject>* JsonExtensionsObject;
-	if (!JsonObject->TryGetObjectField("extensions", JsonExtensionsObject))
+	if (!JsonObject->TryGetObjectField(StringCast<TCHAR>("extensions"), JsonExtensionsObject))
 	{
 		return nullptr;
 	}
@@ -766,7 +766,7 @@ TArray<TSharedRef<FJsonObject>> FglTFRuntimeParser::GetJsonObjectArrayFromExtens
 	TArray<TSharedRef<FJsonObject>> Objects;
 
 	const TSharedPtr<FJsonObject>* JsonExtensionsObject;
-	if (JsonObject->TryGetObjectField("extensions", JsonExtensionsObject))
+	if (JsonObject->TryGetObjectField(StringCast<TCHAR>("extensions"), JsonExtensionsObject))
 	{
 		const TSharedPtr<FJsonObject>* JsonExtensionObject = nullptr;
 		if ((*JsonExtensionsObject)->TryGetObjectField(ExtensionName, JsonExtensionObject))
@@ -886,7 +886,7 @@ int32 FglTFRuntimeParser::GetJsonObjectIndex(TSharedRef<FJsonObject> JsonObject,
 int32 FglTFRuntimeParser::GetJsonExtensionObjectIndex(TSharedRef<FJsonObject> JsonObject, const FString& ExtensionName, const FString& FieldName, const int32 DefaultValue)
 {
 	const TSharedPtr<FJsonObject>* JsonExtensionsObject;
-	if (!JsonObject->TryGetObjectField("extensions", JsonExtensionsObject))
+	if (!JsonObject->TryGetObjectField(StringCast<TCHAR>("extensions"), JsonExtensionsObject))
 	{
 		return DefaultValue;
 	}
@@ -903,7 +903,7 @@ int32 FglTFRuntimeParser::GetJsonExtensionObjectIndex(TSharedRef<FJsonObject> Js
 double FglTFRuntimeParser::GetJsonExtensionObjectNumber(TSharedRef<FJsonObject> JsonObject, const FString& ExtensionName, const FString& FieldName, const double DefaultValue)
 {
 	const TSharedPtr<FJsonObject>* JsonExtensionsObject;
-	if (!JsonObject->TryGetObjectField("extensions", JsonExtensionsObject))
+	if (!JsonObject->TryGetObjectField(StringCast<TCHAR>("extensions"), JsonExtensionsObject))
 	{
 		return DefaultValue;
 	}
@@ -921,7 +921,7 @@ TArray<int32> FglTFRuntimeParser::GetJsonExtensionObjectIndices(TSharedRef<FJson
 {
 	TArray<int32> Indices;
 	const TSharedPtr<FJsonObject>* JsonExtensionsObject;
-	if (!JsonObject->TryGetObjectField("extensions", JsonExtensionsObject))
+	if (!JsonObject->TryGetObjectField(StringCast<TCHAR>("extensions"), JsonExtensionsObject))
 	{
 		return Indices;
 	}
@@ -955,7 +955,7 @@ TArray<double> FglTFRuntimeParser::GetJsonExtensionObjectNumbers(TSharedRef<FJso
 {
 	TArray<double> Numbers;
 	const TSharedPtr<FJsonObject>* JsonExtensionsObject;
-	if (!JsonObject->TryGetObjectField("extensions", JsonExtensionsObject))
+	if (!JsonObject->TryGetObjectField(StringCast<TCHAR>("extensions"), JsonExtensionsObject))
 	{
 		return Numbers;
 	}
@@ -997,7 +997,7 @@ bool FglTFRuntimeParser::LoadScene(int32 SceneIndex, FglTFRuntimeScene& Scene)
 	Scene.Name = GetJsonObjectString(JsonSceneObject.ToSharedRef(), "name", FString::FromInt(Scene.Index));
 
 	const TArray<TSharedPtr<FJsonValue>>* JsonSceneNodes;
-	if (JsonSceneObject->TryGetArrayField("nodes", JsonSceneNodes))
+	if (JsonSceneObject->TryGetArrayField(StringCast<TCHAR>("nodes"), JsonSceneNodes))
 	{
 		for (TSharedPtr<FJsonValue> JsonSceneNode : *JsonSceneNodes)
 		{
@@ -1206,7 +1206,7 @@ bool FglTFRuntimeParser::LoadNode_Internal(int32 Index, TSharedRef<FJsonObject> 
 	FMatrix Matrix = FMatrix::Identity;
 
 	const TArray<TSharedPtr<FJsonValue>>* JsonMatrixValues;
-	if (JsonNodeObject->TryGetArrayField("matrix", JsonMatrixValues))
+	if (JsonNodeObject->TryGetArrayField(StringCast<TCHAR>("matrix"), JsonMatrixValues))
 	{
 		if (!FillJsonMatrix(JsonMatrixValues, Matrix))
 		{
@@ -1215,7 +1215,7 @@ bool FglTFRuntimeParser::LoadNode_Internal(int32 Index, TSharedRef<FJsonObject> 
 	}
 
 	const TArray<TSharedPtr<FJsonValue>>* JsonScaleValues;
-	if (JsonNodeObject->TryGetArrayField("scale", JsonScaleValues))
+	if (JsonNodeObject->TryGetArrayField(StringCast<TCHAR>("scale"), JsonScaleValues))
 	{
 		FVector MatrixScale;
 		if (!GetJsonVector<3>(JsonScaleValues, MatrixScale))
@@ -1227,7 +1227,7 @@ bool FglTFRuntimeParser::LoadNode_Internal(int32 Index, TSharedRef<FJsonObject> 
 	}
 
 	const TArray<TSharedPtr<FJsonValue>>* JsonRotationValues;
-	if (JsonNodeObject->TryGetArrayField("rotation", JsonRotationValues))
+	if (JsonNodeObject->TryGetArrayField(StringCast<TCHAR>("rotation"), JsonRotationValues))
 	{
 		FVector4 Vector;
 		if (!GetJsonVector<4>(JsonRotationValues, Vector))
@@ -1239,7 +1239,7 @@ bool FglTFRuntimeParser::LoadNode_Internal(int32 Index, TSharedRef<FJsonObject> 
 	}
 
 	const TArray<TSharedPtr<FJsonValue>>* JsonTranslationValues;
-	if (JsonNodeObject->TryGetArrayField("translation", JsonTranslationValues))
+	if (JsonNodeObject->TryGetArrayField(StringCast<TCHAR>("translation"), JsonTranslationValues))
 	{
 		FVector Translation;
 		if (!GetJsonVector<3>(JsonTranslationValues, Translation))
@@ -1254,7 +1254,7 @@ bool FglTFRuntimeParser::LoadNode_Internal(int32 Index, TSharedRef<FJsonObject> 
 	Node.Transform = FTransform(SceneBasis.Inverse() * Matrix * SceneBasis);
 
 	const TArray<TSharedPtr<FJsonValue>>* JsonChildren;
-	if (JsonNodeObject->TryGetArrayField("children", JsonChildren))
+	if (JsonNodeObject->TryGetArrayField(StringCast<TCHAR>("children"), JsonChildren))
 	{
 		for (int32 i = 0; i < JsonChildren->Num(); i++)
 		{
@@ -1288,7 +1288,7 @@ bool FglTFRuntimeParser::LoadAnimation_Internal(TSharedRef<FJsonObject> JsonAnim
 	Name = GetJsonObjectString(JsonAnimationObject, "name", "");
 
 	const TArray<TSharedPtr<FJsonValue>>* JsonSamplers;
-	if (!JsonAnimationObject->TryGetArrayField("samplers", JsonSamplers))
+	if (!JsonAnimationObject->TryGetArrayField(StringCast<TCHAR>("samplers"), JsonSamplers))
 	{
 		return false;
 	}
@@ -1320,7 +1320,7 @@ bool FglTFRuntimeParser::LoadAnimation_Internal(TSharedRef<FJsonObject> JsonAnim
 		}
 
 		FString SamplerInterpolation;
-		if (!JsonSamplerObject->TryGetStringField("interpolation", SamplerInterpolation))
+		if (!JsonSamplerObject->TryGetStringField(StringCast<TCHAR>("interpolation"), SamplerInterpolation))
 		{
 			SamplerInterpolation = "LINEAR";
 		}
@@ -1358,7 +1358,7 @@ bool FglTFRuntimeParser::LoadAnimation_Internal(TSharedRef<FJsonObject> JsonAnim
 
 
 	const TArray<TSharedPtr<FJsonValue>>* JsonChannels;
-	if (!JsonAnimationObject->TryGetArrayField("channels", JsonChannels))
+	if (!JsonAnimationObject->TryGetArrayField(StringCast<TCHAR>("channels"), JsonChannels))
 	{
 		return false;
 	}
@@ -1370,7 +1370,7 @@ bool FglTFRuntimeParser::LoadAnimation_Internal(TSharedRef<FJsonObject> JsonAnim
 			return false;
 
 		int32 Sampler;
-		if (!JsonChannelObject->TryGetNumberField("sampler", Sampler))
+		if (!JsonChannelObject->TryGetNumberField(StringCast<TCHAR>("sampler"), Sampler))
 		{
 			return false;
 		}
@@ -1381,7 +1381,7 @@ bool FglTFRuntimeParser::LoadAnimation_Internal(TSharedRef<FJsonObject> JsonAnim
 		}
 
 		const TSharedPtr<FJsonObject>* JsonTargetObject;
-		if (!JsonChannelObject->TryGetObjectField("target", JsonTargetObject))
+		if (!JsonChannelObject->TryGetObjectField(StringCast<TCHAR>("target"), JsonTargetObject))
 		{
 			return false;
 		}
@@ -1390,7 +1390,7 @@ bool FglTFRuntimeParser::LoadAnimation_Internal(TSharedRef<FJsonObject> JsonAnim
 		if (OverrideTrackNameFromExtension.Num() > 0)
 		{
 			const TSharedPtr<FJsonObject>* JsonTargetExtensions;
-			if ((*JsonTargetObject)->TryGetObjectField("extensions", JsonTargetExtensions))
+			if ((*JsonTargetObject)->TryGetObjectField(StringCast<TCHAR>("extensions"), JsonTargetExtensions))
 			{
 				TSharedPtr<FJsonValue> JsonTrackName = GetJSONObjectFromRelativePath(JsonTargetExtensions->ToSharedRef(), OverrideTrackNameFromExtension);
 				if (JsonTrackName)
@@ -1403,7 +1403,7 @@ bool FglTFRuntimeParser::LoadAnimation_Internal(TSharedRef<FJsonObject> JsonAnim
 		if (Node.Name.IsEmpty())
 		{
 			int64 NodeIndex;
-			if (!(*JsonTargetObject)->TryGetNumberField("node", NodeIndex))
+			if (!(*JsonTargetObject)->TryGetNumberField(StringCast<TCHAR>("node"), NodeIndex))
 			{
 				return false;
 			}
@@ -1420,7 +1420,7 @@ bool FglTFRuntimeParser::LoadAnimation_Internal(TSharedRef<FJsonObject> JsonAnim
 		}
 
 		FString Path;
-		if (!(*JsonTargetObject)->TryGetStringField("path", Path))
+		if (!(*JsonTargetObject)->TryGetStringField(StringCast<TCHAR>("path"), Path))
 		{
 			return false;
 		}
@@ -1435,7 +1435,7 @@ TArray<FString> FglTFRuntimeParser::GetCamerasNames()
 {
 	TArray<FString> CamerasNames;
 	const TArray<TSharedPtr<FJsonValue>>* JsonCameras;
-	if (!Root->TryGetArrayField("cameras", JsonCameras))
+	if (!Root->TryGetArrayField(StringCast<TCHAR>("cameras"), JsonCameras))
 	{
 		return CamerasNames;
 	}
@@ -1449,7 +1449,7 @@ TArray<FString> FglTFRuntimeParser::GetCamerasNames()
 		}
 
 		FString CameraName;
-		if (!JsonCameraObject->TryGetStringField("name", CameraName))
+		if (!JsonCameraObject->TryGetStringField(StringCast<TCHAR>("name"), CameraName))
 		{
 			continue;
 		}
@@ -1469,7 +1469,7 @@ UglTFRuntimeAnimationCurve* FglTFRuntimeParser::LoadNodeAnimationCurve(const int
 	}
 
 	const TArray<TSharedPtr<FJsonValue>>* JsonAnimations;
-	if (!Root->TryGetArrayField("animations", JsonAnimations))
+	if (!Root->TryGetArrayField(StringCast<TCHAR>("animations"), JsonAnimations))
 	{
 		return nullptr;
 	}
@@ -1564,7 +1564,7 @@ TArray<UglTFRuntimeAnimationCurve*> FglTFRuntimeParser::LoadAllNodeAnimationCurv
 	}
 
 	const TArray<TSharedPtr<FJsonValue>>* JsonAnimations;
-	if (!Root->TryGetArrayField("animations", JsonAnimations))
+	if (!Root->TryGetArrayField(StringCast<TCHAR>("animations"), JsonAnimations))
 	{
 		return AnimationCurves;
 	}
@@ -1744,16 +1744,16 @@ bool FglTFRuntimeParser::LoadCameraIntoCameraComponent(const int32 CameraIndex, 
 	{
 		CameraComponent->ProjectionMode = ECameraProjectionMode::Perspective;
 		const TSharedPtr<FJsonObject>* PerspectiveObject;
-		if (CameraObject->TryGetObjectField("perspective", PerspectiveObject))
+		if (CameraObject->TryGetObjectField(StringCast<TCHAR>("perspective"), PerspectiveObject))
 		{
 			double AspectRatio;
-			if ((*PerspectiveObject)->TryGetNumberField("aspectRatio", AspectRatio))
+			if ((*PerspectiveObject)->TryGetNumberField(StringCast<TCHAR>("aspectRatio"), AspectRatio))
 			{
 				CameraComponent->AspectRatio = AspectRatio;
 			}
 
 			double YFov;
-			if ((*PerspectiveObject)->TryGetNumberField("yfov", YFov))
+			if ((*PerspectiveObject)->TryGetNumberField(StringCast<TCHAR>("yfov"), YFov))
 			{
 				CameraComponent->FieldOfView = FMath::RadiansToDegrees(YFov) * CameraComponent->AspectRatio;
 			}
@@ -1766,28 +1766,28 @@ bool FglTFRuntimeParser::LoadCameraIntoCameraComponent(const int32 CameraIndex, 
 	{
 		CameraComponent->ProjectionMode = ECameraProjectionMode::Orthographic;
 		const TSharedPtr<FJsonObject>* OrthographicObject;
-		if (CameraObject->TryGetObjectField("orthographic", OrthographicObject))
+		if (CameraObject->TryGetObjectField(StringCast<TCHAR>("orthographic"), OrthographicObject))
 		{
 			double XMag;
-			if (!(*OrthographicObject)->TryGetNumberField("xmag", XMag))
+			if (!(*OrthographicObject)->TryGetNumberField(StringCast<TCHAR>("xmag"), XMag))
 			{
 				AddError("LoadCameraIntoCameraComponent()", "No Orthographic Width specified.");
 				return false;
 			}
 			double YMag;
-			if (!(*OrthographicObject)->TryGetNumberField("ymag", YMag))
+			if (!(*OrthographicObject)->TryGetNumberField(StringCast<TCHAR>("ymag"), YMag))
 			{
 				AddError("LoadCameraIntoCameraComponent()", "No Orthographic Height specified.");
 				return false;
 			}
 			double ZFar;
-			if (!(*OrthographicObject)->TryGetNumberField("zfar", ZFar))
+			if (!(*OrthographicObject)->TryGetNumberField(StringCast<TCHAR>("zfar"), ZFar))
 			{
 				AddError("LoadCameraIntoCameraComponent()", "No Orthographic Far specified.");
 				return false;
 			}
 			double ZNear;
-			if (!(*OrthographicObject)->TryGetNumberField("znear", ZNear))
+			if (!(*OrthographicObject)->TryGetNumberField(StringCast<TCHAR>("znear"), ZNear))
 			{
 				AddError("LoadCameraIntoCameraComponent()", "No Orthographic Near specified.");
 				return false;
@@ -1913,7 +1913,7 @@ USkeleton* FglTFRuntimeParser::LoadSkeletonFromNode(const FglTFRuntimeNode& Node
 bool FglTFRuntimeParser::NodeIsBone(const int32 NodeIndex)
 {
 	const TArray<TSharedPtr<FJsonValue>>* JsonSkins;
-	if (!Root->TryGetArrayField("skins", JsonSkins))
+	if (!Root->TryGetArrayField(StringCast<TCHAR>("skins"), JsonSkins))
 	{
 		return false;
 	}
@@ -1927,7 +1927,7 @@ bool FglTFRuntimeParser::NodeIsBone(const int32 NodeIndex)
 		}
 
 		const TArray<TSharedPtr<FJsonValue>>* JsonJoints;
-		if (!JsonSkinObject->TryGetArrayField("joints", JsonJoints))
+		if (!JsonSkinObject->TryGetArrayField(StringCast<TCHAR>("joints"), JsonJoints))
 		{
 			continue;
 		}
@@ -2092,7 +2092,7 @@ bool FglTFRuntimeParser::GetRootBoneIndex(TSharedRef<FJsonObject> JsonSkinObject
 {
 	// get the list of valid joints	
 	const TArray<TSharedPtr<FJsonValue>>* JsonJoints;
-	if (JsonSkinObject->TryGetArrayField("joints", JsonJoints))
+	if (JsonSkinObject->TryGetArrayField(StringCast<TCHAR>("joints"), JsonJoints))
 	{
 		for (TSharedPtr<FJsonValue> JsonJoint : *JsonJoints)
 		{
@@ -2125,7 +2125,7 @@ bool FglTFRuntimeParser::GetRootBoneIndex(TSharedRef<FJsonObject> JsonSkinObject
 			RootBoneIndex = RootNode.Index;
 		}
 	}
-	else if (JsonSkinObject->TryGetNumberField("skeleton", RootBoneIndex))
+	else if (JsonSkinObject->TryGetNumberField(StringCast<TCHAR>("skeleton"), RootBoneIndex))
 	{
 		// use the "skeleton" field as the root bone
 	}
@@ -2167,7 +2167,7 @@ bool FglTFRuntimeParser::FillReferenceSkeleton(TSharedRef<FJsonObject> JsonSkinO
 
 	TMap<int32, FMatrix> InverseBindMatricesMap;
 	int64 InverseBindMatricesIndex;
-	if (JsonSkinObject->TryGetNumberField("inverseBindMatrices", InverseBindMatricesIndex))
+	if (JsonSkinObject->TryGetNumberField(StringCast<TCHAR>("inverseBindMatrices"), InverseBindMatricesIndex))
 	{
 		FglTFRuntimeBlob InverseBindMatricesBytes;
 		int64 ComponentType, Stride, Elements, ElementSize, Count;
@@ -2517,7 +2517,7 @@ bool FglTFRuntimeParser::LoadPrimitives(TSharedRef<FJsonObject> JsonMeshObject, 
 {
 	// get primitives
 	const TArray<TSharedPtr<FJsonValue>>* JsonPrimitives;
-	if (!JsonMeshObject->TryGetArrayField("primitives", JsonPrimitives))
+	if (!JsonMeshObject->TryGetArrayField(StringCast<TCHAR>("primitives"), JsonPrimitives))
 	{
 		AddError("LoadPrimitives()", "No primitives defined in the asset.");
 		return false;
@@ -2547,10 +2547,10 @@ bool FglTFRuntimeParser::LoadPrimitives(TSharedRef<FJsonObject> JsonMeshObject, 
 	}
 
 	const TSharedPtr<FJsonObject>* JsonExtrasObject;
-	if (JsonMeshObject->TryGetObjectField("extras", JsonExtrasObject))
+	if (JsonMeshObject->TryGetObjectField(StringCast<TCHAR>("extras"), JsonExtrasObject))
 	{
 		const TArray<TSharedPtr<FJsonValue>>* JsonTargetNamesArray;
-		if ((*JsonExtrasObject)->TryGetArrayField("targetNames", JsonTargetNamesArray))
+		if ((*JsonExtrasObject)->TryGetArrayField(StringCast<TCHAR>("targetNames"), JsonTargetNamesArray))
 		{
 			auto ApplyTargetName = [FirstPrimitive](TArray<FglTFRuntimePrimitive>& Primitives, const int32 TargetNameIndex, const FString& TargetName)
 				{
@@ -2654,7 +2654,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 
 	OnPreLoadedPrimitive.Broadcast(AsShared(), JsonPrimitiveObject, Primitive);
 
-	if (!JsonPrimitiveObject->TryGetNumberField("mode", Primitive.Mode))
+	if (!JsonPrimitiveObject->TryGetNumberField(StringCast<TCHAR>("mode"), Primitive.Mode))
 	{
 		Primitive.Mode = 4; // triangles
 	}
@@ -2670,14 +2670,14 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 	}
 
 	const TSharedPtr<FJsonObject>* JsonAttributesObject;
-	if (!JsonPrimitiveObject->TryGetObjectField("attributes", JsonAttributesObject))
+	if (!JsonPrimitiveObject->TryGetObjectField(StringCast<TCHAR>("attributes"), JsonAttributesObject))
 	{
 		AddError("LoadPrimitive()", "No attributes array available");
 		return false;
 	}
 
 	// POSITION is required for generating a valid Mesh
-	if (!(*JsonAttributesObject)->HasField("POSITION"))
+	if (!(*JsonAttributesObject)->HasField(StringCast<TCHAR>("POSITION")))
 	{
 		AddError("LoadPrimitive()", "POSITION attribute is required");
 		return false;
@@ -2705,7 +2705,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 		return false;
 	}
 
-	if ((*JsonAttributesObject)->HasField("NORMAL"))
+	if ((*JsonAttributesObject)->HasField(StringCast<TCHAR>("NORMAL")))
 	{
 		if (!BuildFromAccessorField(JsonAttributesObject->ToSharedRef(), "NORMAL", Primitive.Normals,
 			{ 3 }, SupportedNormalComponentTypes, [&](FVector Value) -> FVector { return SceneBasis.TransformVector(Value); }, Primitive.AdditionalBufferView, true, nullptr))
@@ -2715,7 +2715,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 		}
 	}
 
-	if ((*JsonAttributesObject)->HasField("TANGENT"))
+	if ((*JsonAttributesObject)->HasField(StringCast<TCHAR>("TANGENT")))
 	{
 		if (!BuildFromAccessorField(JsonAttributesObject->ToSharedRef(), "TANGENT", Primitive.Tangents,
 			{ 4 }, SupportedTangentComponentTypes, [&](FVector4 Value) -> FVector4 { return SceneBasis.TransformFVector4(Value); }, Primitive.AdditionalBufferView, true, nullptr))
@@ -2725,7 +2725,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 		}
 	}
 
-	if ((*JsonAttributesObject)->HasField("TEXCOORD_0"))
+	if ((*JsonAttributesObject)->HasField(StringCast<TCHAR>("TEXCOORD_0")))
 	{
 		TArray<FVector2D> UV;
 		int64 TexCoordComponentType = 0;
@@ -2744,7 +2744,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 		Primitive.UVs.Add(UV);
 	}
 
-	if ((*JsonAttributesObject)->HasField("TEXCOORD_1"))
+	if ((*JsonAttributesObject)->HasField(StringCast<TCHAR>("TEXCOORD_1")))
 	{
 		TArray<FVector2D> UV;
 		int64 TexCoordComponentType = 0;
@@ -2763,7 +2763,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 		Primitive.UVs.Add(UV);
 	}
 
-	if ((*JsonAttributesObject)->HasField("JOINTS_0"))
+	if ((*JsonAttributesObject)->HasField(StringCast<TCHAR>("JOINTS_0")))
 	{
 		TArray<FglTFRuntimeUInt16Vector4> Joints;
 		if (!BuildFromAccessorField(JsonAttributesObject->ToSharedRef(), "JOINTS_0", Joints,
@@ -2776,7 +2776,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 		Primitive.Joints.Add(Joints);
 	}
 
-	if ((*JsonAttributesObject)->HasField("JOINTS_1"))
+	if ((*JsonAttributesObject)->HasField(StringCast<TCHAR>("JOINTS_1")))
 	{
 		TArray<FglTFRuntimeUInt16Vector4> Joints;
 		if (!BuildFromAccessorField(JsonAttributesObject->ToSharedRef(), "JOINTS_1", Joints,
@@ -2789,7 +2789,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 		Primitive.Joints.Add(Joints);
 	}
 
-	if ((*JsonAttributesObject)->HasField("JOINTS_2"))
+	if ((*JsonAttributesObject)->HasField(StringCast<TCHAR>("JOINTS_2")))
 	{
 		TArray<FglTFRuntimeUInt16Vector4> Joints;
 		if (!BuildFromAccessorField(JsonAttributesObject->ToSharedRef(), "JOINTS_2", Joints,
@@ -2802,7 +2802,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 		Primitive.Joints.Add(Joints);
 	}
 
-	if ((*JsonAttributesObject)->HasField("WEIGHTS_0"))
+	if ((*JsonAttributesObject)->HasField(StringCast<TCHAR>("WEIGHTS_0")))
 	{
 		TArray<FVector4> Weights;
 		int64 WeightsComponentType = 0;
@@ -2821,7 +2821,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 		Primitive.Weights.Add(Weights);
 	}
 
-	if ((*JsonAttributesObject)->HasField("WEIGHTS_1"))
+	if ((*JsonAttributesObject)->HasField(StringCast<TCHAR>("WEIGHTS_1")))
 	{
 		TArray<FVector4> Weights;
 		int64 WeightsComponentType = 0;
@@ -2840,7 +2840,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 		Primitive.Weights.Add(Weights);
 	}
 
-	if ((*JsonAttributesObject)->HasField("WEIGHTS_2"))
+	if ((*JsonAttributesObject)->HasField(StringCast<TCHAR>("WEIGHTS_2")))
 	{
 		TArray<FVector4> Weights;
 		int64 WeightsComponentType = 0;
@@ -2859,7 +2859,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 		Primitive.Weights.Add(Weights);
 	}
 
-	if ((*JsonAttributesObject)->HasField("COLOR_0"))
+	if ((*JsonAttributesObject)->HasField(StringCast<TCHAR>("COLOR_0")))
 	{
 		if (!BuildFromAccessorField(JsonAttributesObject->ToSharedRef(), "COLOR_0", Primitive.Colors,
 			{ 3, 4 }, { 5126, 5121, 5123 }, Primitive.AdditionalBufferView, true, nullptr))
@@ -2870,7 +2870,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 	}
 
 	const TArray<TSharedPtr<FJsonValue>>* JsonTargetsArray;
-	if (JsonPrimitiveObject->TryGetArrayField("targets", JsonTargetsArray))
+	if (JsonPrimitiveObject->TryGetArrayField(StringCast<TCHAR>("targets"), JsonTargetsArray))
 	{
 		for (TSharedPtr<FJsonValue> JsonTargetItem : *JsonTargetsArray)
 		{
@@ -2885,7 +2885,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 
 			bool bValid = false;
 
-			if (JsonTargetObject->HasField("POSITION"))
+			if (JsonTargetObject->HasField(StringCast<TCHAR>("POSITION")))
 			{
 				if (!BuildFromAccessorField(JsonTargetObject.ToSharedRef(), "POSITION", MorphTarget.Positions,
 					{ 3 }, SupportedPositionComponentTypes, [&](FVector Value) -> FVector { return SceneBasis.TransformPosition(Value) * SceneScale; }, INDEX_NONE, false, nullptr))
@@ -2901,7 +2901,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 				bValid = true;
 			}
 
-			if (JsonTargetObject->HasField("NORMAL"))
+			if (JsonTargetObject->HasField(StringCast<TCHAR>("NORMAL")))
 			{
 				if (!BuildFromAccessorField(JsonTargetObject.ToSharedRef(), "NORMAL", MorphTarget.Normals,
 					{ 3 }, SupportedNormalComponentTypes, [&](FVector Value) -> FVector { return SceneBasis.TransformVector(Value); }, INDEX_NONE, true, nullptr))
@@ -2925,7 +2925,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 	}
 
 	int64 IndicesAccessorIndex;
-	if (JsonPrimitiveObject->TryGetNumberField("indices", IndicesAccessorIndex))
+	if (JsonPrimitiveObject->TryGetNumberField(StringCast<TCHAR>("indices"), IndicesAccessorIndex))
 	{
 		FglTFRuntimeBlob IndicesBytes;
 		int64 ComponentType, Stride, Elements, ElementSize, Count;
@@ -3044,14 +3044,14 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 			for (TSharedRef<FJsonObject> VariantsMapping : VariantsMappings)
 			{
 				const TArray<TSharedPtr<FJsonValue>>* Variants;
-				if (VariantsMapping->TryGetArrayField("variants", Variants))
+				if (VariantsMapping->TryGetArrayField(StringCast<TCHAR>("variants"), Variants))
 				{
 					for (TSharedPtr<FJsonValue> Variant : (*Variants))
 					{
 						int64 VariantIndex;
 						if (Variant->TryGetNumber(VariantIndex) && VariantIndex == WantedIndex)
 						{
-							MaterialIndex = VariantsMapping->GetNumberField("material");
+							MaterialIndex = VariantsMapping->GetNumberField(StringCast<TCHAR>("material"));
 							bMappingFound = true;
 							break;
 						}
@@ -3066,7 +3066,7 @@ bool FglTFRuntimeParser::LoadPrimitive(TSharedRef<FJsonObject> JsonPrimitiveObje
 
 		if (MaterialIndex == INDEX_NONE)
 		{
-			if (!JsonPrimitiveObject->TryGetNumberField("material", MaterialIndex))
+			if (!JsonPrimitiveObject->TryGetNumberField(StringCast<TCHAR>("material"), MaterialIndex))
 			{
 				MaterialIndex = INDEX_NONE;
 			}
@@ -4020,7 +4020,7 @@ bool FglTFRuntimeParser::GetBuffer(const int32 Index, FglTFRuntimeBlob& Blob)
 	const TArray<TSharedPtr<FJsonValue>>* JsonBuffers;
 
 	// no buffers ?
-	if (!Root->TryGetArrayField("buffers", JsonBuffers))
+	if (!Root->TryGetArrayField(StringCast<TCHAR>("buffers"), JsonBuffers))
 	{
 		return false;
 	}
@@ -4037,13 +4037,13 @@ bool FglTFRuntimeParser::GetBuffer(const int32 Index, FglTFRuntimeBlob& Blob)
 	}
 
 	int64 ByteLength;
-	if (!JsonBufferObject->TryGetNumberField("byteLength", ByteLength))
+	if (!JsonBufferObject->TryGetNumberField(StringCast<TCHAR>("byteLength"), ByteLength))
 	{
 		return false;
 	}
 
 	FString Uri;
-	if (!JsonBufferObject->TryGetStringField("uri", Uri))
+	if (!JsonBufferObject->TryGetStringField(StringCast<TCHAR>("uri"), Uri))
 	{
 		return false;
 	}
@@ -4134,7 +4134,7 @@ bool FglTFRuntimeParser::GetBufferView(const int32 Index, FglTFRuntimeBlob& Blob
 	}
 
 	int64 BufferIndex;
-	if (!JsonBufferViewObject->TryGetNumberField("buffer", BufferIndex))
+	if (!JsonBufferViewObject->TryGetNumberField(StringCast<TCHAR>("buffer"), BufferIndex))
 	{
 		return false;
 	}
@@ -4146,18 +4146,18 @@ bool FglTFRuntimeParser::GetBufferView(const int32 Index, FglTFRuntimeBlob& Blob
 	}
 
 	int64 ByteLength;
-	if (!JsonBufferViewObject->TryGetNumberField("byteLength", ByteLength))
+	if (!JsonBufferViewObject->TryGetNumberField(StringCast<TCHAR>("byteLength"), ByteLength))
 	{
 		return false;
 	}
 
 	int64 ByteOffset;
-	if (!JsonBufferViewObject->TryGetNumberField("byteOffset", ByteOffset))
+	if (!JsonBufferViewObject->TryGetNumberField(StringCast<TCHAR>("byteOffset"), ByteOffset))
 	{
 		ByteOffset = 0;
 	}
 
-	if (!JsonBufferViewObject->TryGetNumberField("byteStride", Stride))
+	if (!JsonBufferViewObject->TryGetNumberField(StringCast<TCHAR>("byteStride"), Stride))
 	{
 		Stride = 0;
 	}
@@ -4178,17 +4178,17 @@ bool FglTFRuntimeParser::GetBufferView(const int32 Index, FglTFRuntimeBlob& Blob
 			return false;
 		}
 		int64 Elements;
-		if (!JsonBufferViewObject->TryGetNumberField("count", Elements))
+		if (!JsonBufferViewObject->TryGetNumberField(StringCast<TCHAR>("count"), Elements))
 		{
 			return false;
 		}
 		FString MeshOptMode;
-		if (!JsonBufferViewObject->TryGetStringField("mode", MeshOptMode))
+		if (!JsonBufferViewObject->TryGetStringField(StringCast<TCHAR>("mode"), MeshOptMode))
 		{
 			return false;
 		}
 		FString MeshOptFilter;
-		if (!JsonBufferViewObject->TryGetStringField("filter", MeshOptFilter))
+		if (!JsonBufferViewObject->TryGetStringField(StringCast<TCHAR>("filter"), MeshOptFilter))
 		{
 			MeshOptFilter = "NONE";
 		}
@@ -4224,43 +4224,43 @@ bool FglTFRuntimeParser::GetAccessor(const int32 Index, int64& ComponentType, in
 
 	if (!AdditionalBufferView)
 	{
-		if (!JsonAccessorObject->TryGetNumberField("bufferView", BufferViewIndex))
+		if (!JsonAccessorObject->TryGetNumberField(StringCast<TCHAR>("bufferView"), BufferViewIndex))
 		{
 			bInitWithZeros = true;
 		}
 
 
-		if (!JsonAccessorObject->TryGetNumberField("byteOffset", ByteOffset))
+		if (!JsonAccessorObject->TryGetNumberField(StringCast<TCHAR>("byteOffset"), ByteOffset))
 		{
 			ByteOffset = 0;
 		}
 	}
 
 	const TSharedPtr<FJsonObject>* JsonSparseObject = nullptr;
-	if (JsonAccessorObject->TryGetObjectField("sparse", JsonSparseObject))
+	if (JsonAccessorObject->TryGetObjectField(StringCast<TCHAR>("sparse"), JsonSparseObject))
 	{
 		bHasSparse = true;
 	}
 
 	const bool bOriginalNormalized = bNormalized;
 
-	if (!JsonAccessorObject->TryGetBoolField("normalized", bNormalized))
+	if (!JsonAccessorObject->TryGetBoolField(StringCast<TCHAR>("normalized"), bNormalized))
 	{
 		bNormalized = bOriginalNormalized;
 	}
 
-	if (!JsonAccessorObject->TryGetNumberField("componentType", ComponentType))
+	if (!JsonAccessorObject->TryGetNumberField(StringCast<TCHAR>("componentType"), ComponentType))
 	{
 		return false;
 	}
 
-	if (!JsonAccessorObject->TryGetNumberField("count", Count))
+	if (!JsonAccessorObject->TryGetNumberField(StringCast<TCHAR>("count"), Count))
 	{
 		return false;
 	}
 
 	FString Type;
-	if (!JsonAccessorObject->TryGetStringField("type", Type))
+	if (!JsonAccessorObject->TryGetStringField(StringCast<TCHAR>("type"), Type))
 	{
 		return false;
 	}
@@ -4355,7 +4355,7 @@ bool FglTFRuntimeParser::GetAccessor(const int32 Index, int64& ComponentType, in
 	}
 
 	int64 SparseCount;
-	if (!(*JsonSparseObject)->TryGetNumberField("count", SparseCount))
+	if (!(*JsonSparseObject)->TryGetNumberField(StringCast<TCHAR>("count"), SparseCount))
 	{
 		return false;
 	}
@@ -4366,7 +4366,7 @@ bool FglTFRuntimeParser::GetAccessor(const int32 Index, int64& ComponentType, in
 	}
 
 	const TSharedPtr<FJsonObject>* JsonSparseIndicesObject = nullptr;
-	if (!(*JsonSparseObject)->TryGetObjectField("indices", JsonSparseIndicesObject))
+	if (!(*JsonSparseObject)->TryGetObjectField(StringCast<TCHAR>("indices"), JsonSparseIndicesObject))
 	{
 		return true;
 	}
@@ -4378,13 +4378,13 @@ bool FglTFRuntimeParser::GetAccessor(const int32 Index, int64& ComponentType, in
 	}
 
 	int64 SparseByteOffset;
-	if (!(*JsonSparseIndicesObject)->TryGetNumberField("byteOffset", SparseByteOffset))
+	if (!(*JsonSparseIndicesObject)->TryGetNumberField(StringCast<TCHAR>("byteOffset"), SparseByteOffset))
 	{
 		SparseByteOffset = 0;
 	}
 
 	int64 SparseComponentType;
-	if (!(*JsonSparseIndicesObject)->TryGetNumberField("componentType", SparseComponentType))
+	if (!(*JsonSparseIndicesObject)->TryGetNumberField(StringCast<TCHAR>("componentType"), SparseComponentType))
 	{
 		return false;
 	}
@@ -4437,7 +4437,7 @@ bool FglTFRuntimeParser::GetAccessor(const int32 Index, int64& ComponentType, in
 	}
 
 	const TSharedPtr<FJsonObject>* JsonSparseValuesObject = nullptr;
-	if (!(*JsonSparseObject)->TryGetObjectField("values", JsonSparseValuesObject))
+	if (!(*JsonSparseObject)->TryGetObjectField(StringCast<TCHAR>("values"), JsonSparseValuesObject))
 	{
 		return true;
 	}
@@ -4449,7 +4449,7 @@ bool FglTFRuntimeParser::GetAccessor(const int32 Index, int64& ComponentType, in
 	}
 
 	int64 SparseValueByteOffset;
-	if (!(*JsonSparseValuesObject)->TryGetNumberField("byteOffset", SparseValueByteOffset))
+	if (!(*JsonSparseValuesObject)->TryGetNumberField(StringCast<TCHAR>("byteOffset"), SparseValueByteOffset))
 	{
 		SparseValueByteOffset = 0;
 	}
@@ -4722,7 +4722,7 @@ bool FglTFRuntimeParser::GetMorphTargetNames(const int32 MeshIndex, TArray<FName
 	}
 	// get primitives
 	const TArray<TSharedPtr<FJsonValue>>* JsonPrimitives;
-	if (!JsonMeshObject->TryGetArrayField("primitives", JsonPrimitives))
+	if (!JsonMeshObject->TryGetArrayField(StringCast<TCHAR>("primitives"), JsonPrimitives))
 	{
 		AddError("GetMorphTargetNames()", "No primitives defined in the asset.");
 		return false;
@@ -4739,7 +4739,7 @@ bool FglTFRuntimeParser::GetMorphTargetNames(const int32 MeshIndex, TArray<FName
 		}
 
 		const TArray<TSharedPtr<FJsonValue>>* JsonTargetsArray;
-		if (!JsonPrimitiveObject->TryGetArrayField("targets", JsonTargetsArray))
+		if (!JsonPrimitiveObject->TryGetArrayField(StringCast<TCHAR>("targets"), JsonTargetsArray))
 		{
 			AddError("GetMorphTargetNames()", "No MorphTarget defined in the asset.");
 			return false;
@@ -4766,10 +4766,10 @@ bool FglTFRuntimeParser::GetMorphTargetNames(const int32 MeshIndex, TArray<FName
 
 	// eventually cleanup names using targetNames extras
 	const TSharedPtr<FJsonObject>* JsonExtrasObject;
-	if (JsonMeshObject->TryGetObjectField("extras", JsonExtrasObject))
+	if (JsonMeshObject->TryGetObjectField(StringCast<TCHAR>("extras"), JsonExtrasObject))
 	{
 		const TArray<TSharedPtr<FJsonValue>>* JsonTargetNamesArray;
-		if ((*JsonExtrasObject)->TryGetArrayField("targetNames", JsonTargetNamesArray))
+		if ((*JsonExtrasObject)->TryGetArrayField(StringCast<TCHAR>("targetNames"), JsonTargetNamesArray))
 		{
 			for (int32 TargetNameIndex = 0; TargetNameIndex < JsonTargetNamesArray->Num(); TargetNameIndex++)
 			{
@@ -4952,7 +4952,7 @@ FString FglTFRuntimeZipFile::GetFirstFilenameByExtension(const FString& Extensio
 bool FglTFRuntimeParser::GetJsonObjectBytes(TSharedRef<FJsonObject> JsonObject, TArray64<uint8>& Bytes)
 {
 	FString Uri;
-	if (JsonObject->TryGetStringField("uri", Uri))
+	if (JsonObject->TryGetStringField(StringCast<TCHAR>("uri"), Uri))
 	{
 		// check it is a valid base64 data uri
 		if (Uri.StartsWith("data:"))
@@ -4998,7 +4998,7 @@ bool FglTFRuntimeParser::GetJsonObjectBytes(TSharedRef<FJsonObject> JsonObject, 
 	else
 	{
 		int64 BufferViewIndex;
-		if (JsonObject->TryGetNumberField("bufferView", BufferViewIndex))
+		if (JsonObject->TryGetNumberField(StringCast<TCHAR>("bufferView"), BufferViewIndex))
 		{
 			int64 Stride;
 			FglTFRuntimeBlob Blob;
@@ -5033,7 +5033,7 @@ TArray<TSharedRef<FJsonObject>> FglTFRuntimeParser::GetMeshes() const
 	TArray<TSharedRef<FJsonObject>> Meshes;
 
 	const TArray<TSharedPtr<FJsonValue>>* JsonArray;
-	if (Root->TryGetArrayField("meshes", JsonArray))
+	if (Root->TryGetArrayField(StringCast<TCHAR>("meshes"), JsonArray))
 	{
 		for (TSharedPtr<FJsonValue> JsonValue : *JsonArray)
 		{
@@ -5053,7 +5053,7 @@ TArray<TSharedRef<FJsonObject>> FglTFRuntimeParser::GetMeshPrimitives(TSharedRef
 	TArray<TSharedRef<FJsonObject>> Primitives;
 
 	const TArray<TSharedPtr<FJsonValue>>* JsonArray;
-	if (Mesh->TryGetArrayField("primitives", JsonArray))
+	if (Mesh->TryGetArrayField(StringCast<TCHAR>("primitives"), JsonArray))
 	{
 		for (TSharedPtr<FJsonValue> JsonValue : *JsonArray)
 		{
@@ -5086,7 +5086,7 @@ TSharedPtr<FJsonObject> FglTFRuntimeParser::GetJsonObjectFromObject(TSharedRef<F
 TSharedPtr<FJsonObject> FglTFRuntimeParser::GetJsonObjectExtension(TSharedRef<FJsonObject> JsonObject, const FString& Name) const
 {
 	const TSharedPtr<FJsonObject>* ExtensionsObject = nullptr;
-	if (JsonObject->TryGetObjectField("extensions", ExtensionsObject))
+	if (JsonObject->TryGetObjectField(StringCast<TCHAR>("extensions"), ExtensionsObject))
 	{
 		const TSharedPtr<FJsonObject>* RequestedExtensionObject = nullptr;
 		if ((*ExtensionsObject)->TryGetObjectField(Name, RequestedExtensionObject))
@@ -6041,7 +6041,7 @@ TArray<TSharedRef<FJsonObject>> FglTFRuntimeParser::GetAnimations() const
 	TArray<TSharedRef<FJsonObject>> Animations;
 
 	const TArray<TSharedPtr<FJsonValue>>* JsonArray;
-	if (Root->TryGetArrayField("animations", JsonArray))
+	if (Root->TryGetArrayField(StringCast<TCHAR>("animations"), JsonArray))
 	{
 		for (TSharedPtr<FJsonValue> JsonValue : *JsonArray)
 		{
@@ -6063,7 +6063,7 @@ TArray<FString> FglTFRuntimeParser::GetAnimationsNames() const
 	for (const TSharedRef<FJsonObject>& Animation : Animations)
 	{
 		FString Name;
-		if (Animation->TryGetStringField("name", Name))
+		if (Animation->TryGetStringField(StringCast<TCHAR>("name"), Name))
 		{
 			if (!Name.IsEmpty())
 			{

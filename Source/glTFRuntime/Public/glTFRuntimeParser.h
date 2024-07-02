@@ -1442,7 +1442,7 @@ struct FglTFRuntimeSkeletalMeshContext : public FGCObject
 
 	const FglTFRuntimeSkeletalMeshConfig SkeletalMeshConfig;
 
-	USkeletalMesh* SkeletalMesh;
+	TObjectPtr<USkeletalMesh> SkeletalMesh;
 
 	int32 SkinIndex;
 
@@ -1659,7 +1659,7 @@ struct FglTFRuntimeStaticMeshContext : public FGCObject
 
 	const FglTFRuntimeStaticMeshConfig StaticMeshConfig;
 
-	UStaticMesh* StaticMesh;
+	TObjectPtr<UStaticMesh> StaticMesh;
 	FStaticMeshRenderData* RenderData;
 	FBoxSphereBounds BoundingBoxAndSphere;
 	FVector LOD0PivotDelta = FVector::ZeroVector;
@@ -2334,17 +2334,17 @@ protected:
 	void LoadAndFillBaseMaterials();
 	TSharedRef<FJsonObject> Root;
 
-	TMap<int32, UStaticMesh*> StaticMeshesCache;
-	TMap<int32, UMaterialInterface*> MaterialsCache;
-	TMap<int32, USkeleton*> SkeletonsCache;
-	TMap<int32, USkeletalMesh*> SkeletalMeshesCache;
-	TMap<int32, UTexture2D*> TexturesCache;
+	TMap<int32, TObjectPtr<UStaticMesh>> StaticMeshesCache;
+	TMap<int32, TObjectPtr<UMaterialInterface>> MaterialsCache;
+	TMap<int32, TObjectPtr<USkeleton>> SkeletonsCache;
+	TMap<int32, TObjectPtr<USkeletalMesh>> SkeletalMeshesCache;
+	TMap<int32, TObjectPtr<UTexture2D>> TexturesCache;
 
 	TMap<int32, TArray64<uint8>> BuffersCache;
 	TMap<int32, TArray64<uint8>> CompressedBufferViewsCache;
 	TMap<int32, int64> CompressedBufferViewsStridesCache;
 
-	TMap<UMaterialInterface*, FString> MaterialsNameCache;
+	TMap<TObjectPtr<UMaterialInterface>, FString> MaterialsNameCache;
 
 	TArray<FglTFRuntimeNode> AllNodesCache;
 	bool bAllNodesCached;
@@ -2398,11 +2398,11 @@ public:
 	bool GetJsonObjectBytes(TSharedRef<FJsonObject> JsonObject, TArray64<uint8>& Bytes);
 	bool GetJsonObjectBool(TSharedRef<FJsonObject> JsonObject, const FString& FieldName, const bool DefaultValue);
 
-	TMap<EglTFRuntimeMaterialType, UMaterialInterface*>& GetMetallicRoughnessMaterialsMap() { return MetallicRoughnessMaterialsMap; };
-	TMap<EglTFRuntimeMaterialType, UMaterialInterface*>& GetSpecularGlossinessMaterialsMap() { return SpecularGlossinessMaterialsMap; };
-	TMap<EglTFRuntimeMaterialType, UMaterialInterface*>& GetUnlitMaterialsMap() { return UnlitMaterialsMap; };
-	TMap<EglTFRuntimeMaterialType, UMaterialInterface*>& GetTransmissionMaterialsMap() { return TransmissionMaterialsMap; };
-	TMap<EglTFRuntimeMaterialType, UMaterialInterface*>& GetClearCoatMaterialsMap() { return ClearCoatMaterialsMap; };
+	TMap<EglTFRuntimeMaterialType, TObjectPtr<UMaterialInterface>>& GetMetallicRoughnessMaterialsMap() { return MetallicRoughnessMaterialsMap; };
+	TMap<EglTFRuntimeMaterialType, TObjectPtr<UMaterialInterface>>& GetSpecularGlossinessMaterialsMap() { return SpecularGlossinessMaterialsMap; };
+	TMap<EglTFRuntimeMaterialType, TObjectPtr<UMaterialInterface>>& GetUnlitMaterialsMap() { return UnlitMaterialsMap; };
+	TMap<EglTFRuntimeMaterialType, TObjectPtr<UMaterialInterface>>& GetTransmissionMaterialsMap() { return TransmissionMaterialsMap; };
+	TMap<EglTFRuntimeMaterialType, TObjectPtr<UMaterialInterface>>& GetClearCoatMaterialsMap() { return ClearCoatMaterialsMap; };
 
 	FString ToJsonString() const;
 
@@ -2430,11 +2430,11 @@ protected:
 	FMatrix SceneBasis;
 	float SceneScale;
 
-	TMap<EglTFRuntimeMaterialType, UMaterialInterface*> MetallicRoughnessMaterialsMap;
-	TMap<EglTFRuntimeMaterialType, UMaterialInterface*> SpecularGlossinessMaterialsMap;
-	TMap<EglTFRuntimeMaterialType, UMaterialInterface*> UnlitMaterialsMap;
-	TMap<EglTFRuntimeMaterialType, UMaterialInterface*> TransmissionMaterialsMap;
-	TMap<EglTFRuntimeMaterialType, UMaterialInterface*> ClearCoatMaterialsMap;
+	TMap<EglTFRuntimeMaterialType, TObjectPtr<UMaterialInterface>> MetallicRoughnessMaterialsMap;
+	TMap<EglTFRuntimeMaterialType, TObjectPtr<UMaterialInterface>> SpecularGlossinessMaterialsMap;
+	TMap<EglTFRuntimeMaterialType, TObjectPtr<UMaterialInterface>> UnlitMaterialsMap;
+	TMap<EglTFRuntimeMaterialType, TObjectPtr<UMaterialInterface>> TransmissionMaterialsMap;
+	TMap<EglTFRuntimeMaterialType, TObjectPtr<UMaterialInterface>> ClearCoatMaterialsMap;
 
 	TArray<FString> Errors;
 

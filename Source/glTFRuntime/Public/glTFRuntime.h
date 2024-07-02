@@ -29,6 +29,6 @@ public:
 	
 private:
 
-	UglTFDataAsset* GltfDataAsset = nullptr;
+	TObjectPtr<UglTFDataAsset> GltfDataAsset = nullptr;
 	
 };

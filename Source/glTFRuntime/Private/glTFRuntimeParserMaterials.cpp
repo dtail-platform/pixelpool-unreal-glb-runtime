@@ -37,13 +37,13 @@ UMaterialInterface* FglTFRuntimeParser::LoadMaterial_Internal(const int32 Index,
 		RuntimeMaterial.BaseSpecularFactor = MaterialsConfig.SpecularFactor;
 	}
 
-	if (!JsonMaterialObject->TryGetBoolField("doubleSided", RuntimeMaterial.bTwoSided))
+	if (!JsonMaterialObject->TryGetBoolField(StringCast<TCHAR>("doubleSided"), RuntimeMaterial.bTwoSided))
 	{
 		RuntimeMaterial.bTwoSided = false;
 	}
 
 	FString AlphaMode;
-	if (!JsonMaterialObject->TryGetStringField("alphaMode", AlphaMode))
+	if (!JsonMaterialObject->TryGetStringField(StringCast<TCHAR>("alphaMode"), AlphaMode))
 	{
 		AlphaMode = "OPAQUE";
 	}
@@ -56,7 +56,7 @@ UMaterialInterface* FglTFRuntimeParser::LoadMaterial_Internal(const int32 Index,
 	{
 		RuntimeMaterial.bMasked = true;
 		double AlphaCutoffDouble;
-		if (!JsonMaterialObject->TryGetNumberField("alphaCutoff", AlphaCutoffDouble))
+		if (!JsonMaterialObject->TryGetNumberField(StringCast<TCHAR>("alphaCutoff"), AlphaCutoffDouble))
 		{
 			RuntimeMaterial.AlphaCutoff = 0.5f;
 		}
@@ -122,12 +122,12 @@ UMaterialInterface* FglTFRuntimeParser::LoadMaterial_Internal(const int32 Index,
 			if (JsonMaterialObject->TryGetObjectField(ParamName, JsonTextureObject))
 			{
 				int64 TextureIndex;
-				if (!(*JsonTextureObject)->TryGetNumberField("index", TextureIndex))
+				if (!(*JsonTextureObject)->TryGetNumberField(StringCast<TCHAR>("index"), TextureIndex))
 				{
 					return nullptr;
 				}
 
-				if (!(*JsonTextureObject)->TryGetNumberField("texCoord", ParamTransform.TexCoord))
+				if (!(*JsonTextureObject)->TryGetNumberField(StringCast<TCHAR>("texCoord"), ParamTransform.TexCoord))
 				{
 					ParamTransform.TexCoord = 0;
 				}
@@ -165,17 +165,17 @@ UMaterialInterface* FglTFRuntimeParser::LoadMaterial_Internal(const int32 Index,
 		};
 
 	const TSharedPtr<FJsonObject>* JsonPBRObject;
-	if (JsonMaterialObject->TryGetObjectField("pbrMetallicRoughness", JsonPBRObject))
+	if (JsonMaterialObject->TryGetObjectField(StringCast<TCHAR>("pbrMetallicRoughness"), JsonPBRObject))
 	{
 		GetMaterialVector(JsonPBRObject->ToSharedRef(), "baseColorFactor", 4, RuntimeMaterial.bHasBaseColorFactor, RuntimeMaterial.BaseColorFactor);
 		GetMaterialTexture(JsonPBRObject->ToSharedRef(), "baseColorTexture", true, RuntimeMaterial.BaseColorTextureCache, RuntimeMaterial.BaseColorTextureMips, RuntimeMaterial.BaseColorTransform, RuntimeMaterial.BaseColorSampler, false);
 
-		if ((*JsonPBRObject)->TryGetNumberField("metallicFactor", RuntimeMaterial.MetallicFactor))
+		if ((*JsonPBRObject)->TryGetNumberField(StringCast<TCHAR>("metallicFactor"), RuntimeMaterial.MetallicFactor))
 		{
 			RuntimeMaterial.bHasMetallicFactor = true;
 		}
 
-		if ((*JsonPBRObject)->TryGetNumberField("roughnessFactor", RuntimeMaterial.RoughnessFactor))
+		if ((*JsonPBRObject)->TryGetNumberField(StringCast<TCHAR>("roughnessFactor"), RuntimeMaterial.RoughnessFactor))
 		{
 			RuntimeMaterial.bHasRoughnessFactor = true;
 			RuntimeMaterial.BaseSpecularFactor = .18f;
@@ -186,7 +186,7 @@ UMaterialInterface* FglTFRuntimeParser::LoadMaterial_Internal(const int32 Index,
 
 	if (const TSharedPtr<FJsonObject> JsonNormalTexture = GetMaterialTexture(JsonMaterialObject, "normalTexture", false, RuntimeMaterial.NormalTextureCache, RuntimeMaterial.NormalTextureMips, RuntimeMaterial.NormalTransform, RuntimeMaterial.NormalSampler, true))
 	{
-		JsonNormalTexture->TryGetNumberField("scale", RuntimeMaterial.NormalTextureScale);
+		JsonNormalTexture->TryGetNumberField(StringCast<TCHAR>("scale"), RuntimeMaterial.NormalTextureScale);
 	}
 
 	GetMaterialTexture(JsonMaterialObject, "occlusionTexture", false, RuntimeMaterial.OcclusionTextureCache, RuntimeMaterial.OcclusionTextureMips, RuntimeMaterial.OcclusionTransform, RuntimeMaterial.OcclusionSampler, false);
@@ -196,18 +196,18 @@ UMaterialInterface* FglTFRuntimeParser::LoadMaterial_Internal(const int32 Index,
 	GetMaterialTexture(JsonMaterialObject, "emissiveTexture", true, RuntimeMaterial.EmissiveTextureCache, RuntimeMaterial.EmissiveTextureMips, RuntimeMaterial.EmissiveTransform, RuntimeMaterial.EmissiveSampler, false);
 
 	const TSharedPtr<FJsonObject>* JsonExtensions;
-	if (JsonMaterialObject->TryGetObjectField("extensions", JsonExtensions))
+	if (JsonMaterialObject->TryGetObjectField(StringCast<TCHAR>("extensions"), JsonExtensions))
 	{
 		// KHR_materials_pbrSpecularGlossiness
 		const TSharedPtr<FJsonObject>* JsonPbrSpecularGlossiness;
-		if ((*JsonExtensions)->TryGetObjectField("KHR_materials_pbrSpecularGlossiness", JsonPbrSpecularGlossiness))
+		if ((*JsonExtensions)->TryGetObjectField(StringCast<TCHAR>("KHR_materials_pbrSpecularGlossiness"), JsonPbrSpecularGlossiness))
 		{
 			GetMaterialVector(JsonPbrSpecularGlossiness->ToSharedRef(), "diffuseFactor", 4, RuntimeMaterial.bHasDiffuseFactor, RuntimeMaterial.DiffuseFactor);
 			GetMaterialTexture(JsonPbrSpecularGlossiness->ToSharedRef(), "diffuseTexture", true, RuntimeMaterial.DiffuseTextureCache, RuntimeMaterial.DiffuseTextureMips, RuntimeMaterial.DiffuseTransform, RuntimeMaterial.DiffuseSampler, false);
 
 			GetMaterialVector(JsonPbrSpecularGlossiness->ToSharedRef(), "specularFactor", 3, RuntimeMaterial.bHasSpecularFactor, RuntimeMaterial.SpecularFactor);
 
-			if ((*JsonPbrSpecularGlossiness)->TryGetNumberField("glossinessFactor", RuntimeMaterial.GlossinessFactor))
+			if ((*JsonPbrSpecularGlossiness)->TryGetNumberField(StringCast<TCHAR>("glossinessFactor"), RuntimeMaterial.GlossinessFactor))
 			{
 				RuntimeMaterial.bHasGlossinessFactor = true;
 			}
@@ -219,9 +219,9 @@ UMaterialInterface* FglTFRuntimeParser::LoadMaterial_Internal(const int32 Index,
 
 		// KHR_materials_transmission
 		const TSharedPtr<FJsonObject>* JsonMaterialTransmission;
-		if ((*JsonExtensions)->TryGetObjectField("KHR_materials_transmission", JsonMaterialTransmission))
+		if ((*JsonExtensions)->TryGetObjectField(StringCast<TCHAR>("KHR_materials_transmission"), JsonMaterialTransmission))
 		{
-			if ((*JsonMaterialTransmission)->TryGetNumberField("transmissionFactor", RuntimeMaterial.TransmissionFactor))
+			if ((*JsonMaterialTransmission)->TryGetNumberField(StringCast<TCHAR>("transmissionFactor"), RuntimeMaterial.TransmissionFactor))
 			{
 				RuntimeMaterial.bHasTransmissionFactor = (RuntimeMaterial.TransmissionFactor > 0.0);
 			}
@@ -232,16 +232,16 @@ UMaterialInterface* FglTFRuntimeParser::LoadMaterial_Internal(const int32 Index,
 
 		// KHR_materials_unlit 
 		const TSharedPtr<FJsonObject>* JsonMaterialUnlit;
-		if ((*JsonExtensions)->TryGetObjectField("KHR_materials_unlit", JsonMaterialUnlit))
+		if ((*JsonExtensions)->TryGetObjectField(StringCast<TCHAR>("KHR_materials_unlit"), JsonMaterialUnlit))
 		{
 			RuntimeMaterial.bKHR_materials_unlit = true;
 		}
 
 		// KHR_materials_ior
 		const TSharedPtr<FJsonObject>* JsonMaterialIOR;
-		if ((*JsonExtensions)->TryGetObjectField("KHR_materials_ior", JsonMaterialIOR))
+		if ((*JsonExtensions)->TryGetObjectField(StringCast<TCHAR>("KHR_materials_ior"), JsonMaterialIOR))
 		{
-			if (!(*JsonMaterialIOR)->TryGetNumberField("ior", RuntimeMaterial.IOR))
+			if (!(*JsonMaterialIOR)->TryGetNumberField(StringCast<TCHAR>("ior"), RuntimeMaterial.IOR))
 			{
 				RuntimeMaterial.IOR = 1.5;
 			}
@@ -250,9 +250,9 @@ UMaterialInterface* FglTFRuntimeParser::LoadMaterial_Internal(const int32 Index,
 
 		// KHR_materials_specular
 		const TSharedPtr<FJsonObject>* JsonMaterialSpecular;
-		if ((*JsonExtensions)->TryGetObjectField("KHR_materials_specular", JsonMaterialSpecular))
+		if ((*JsonExtensions)->TryGetObjectField(StringCast<TCHAR>("KHR_materials_specular"), JsonMaterialSpecular))
 		{
-			if (!(*JsonMaterialSpecular)->TryGetNumberField("specularFactor", RuntimeMaterial.BaseSpecularFactor))
+			if (!(*JsonMaterialSpecular)->TryGetNumberField(StringCast<TCHAR>("specularFactor"), RuntimeMaterial.BaseSpecularFactor))
 			{
 				RuntimeMaterial.BaseSpecularFactor = 1;
 			}
@@ -262,14 +262,14 @@ UMaterialInterface* FglTFRuntimeParser::LoadMaterial_Internal(const int32 Index,
 
 		// KHR_materials_clearcoat
 		const TSharedPtr<FJsonObject>* JsonMaterialClearCoat;
-		if ((*JsonExtensions)->TryGetObjectField("KHR_materials_clearcoat", JsonMaterialClearCoat))
+		if ((*JsonExtensions)->TryGetObjectField(StringCast<TCHAR>("KHR_materials_clearcoat"), JsonMaterialClearCoat))
 		{
-			if (!(*JsonMaterialClearCoat)->TryGetNumberField("clearcoatFactor", RuntimeMaterial.ClearCoatFactor))
+			if (!(*JsonMaterialClearCoat)->TryGetNumberField(StringCast<TCHAR>("clearcoatFactor"), RuntimeMaterial.ClearCoatFactor))
 			{
 				RuntimeMaterial.ClearCoatFactor = 0;
 			}
 
-			if (!(*JsonMaterialClearCoat)->TryGetNumberField("clearcoatRoughnessFactor", RuntimeMaterial.ClearCoatRoughnessFactor))
+			if (!(*JsonMaterialClearCoat)->TryGetNumberField(StringCast<TCHAR>("clearcoatRoughnessFactor"), RuntimeMaterial.ClearCoatRoughnessFactor))
 			{
 				RuntimeMaterial.ClearCoatRoughnessFactor = 0;
 			}
@@ -968,7 +968,7 @@ UTexture2D* FglTFRuntimeParser::LoadTexture(const int32 TextureIndex, TArray<Fgl
 
 	const TArray<TSharedPtr<FJsonValue>>* JsonTextures;
 	// no images ?
-	if (!Root->TryGetArrayField("textures", JsonTextures))
+	if (!Root->TryGetArrayField(StringCast<TCHAR>("textures"), JsonTextures))
 	{
 		return nullptr;
 	}
@@ -987,7 +987,7 @@ UTexture2D* FglTFRuntimeParser::LoadTexture(const int32 TextureIndex, TArray<Fgl
 	int64 ImageIndex = INDEX_NONE;
 	OnTextureImageIndex.Broadcast(AsShared(), JsonTextureObject.ToSharedRef(), ImageIndex);
 
-	if (ImageIndex <= INDEX_NONE && !JsonTextureObject->TryGetNumberField("source", ImageIndex))
+	if (ImageIndex <= INDEX_NONE && !JsonTextureObject->TryGetNumberField(StringCast<TCHAR>("source"), ImageIndex))
 	{
 		return nullptr;
 	}
@@ -1010,11 +1010,11 @@ UTexture2D* FglTFRuntimeParser::LoadTexture(const int32 TextureIndex, TArray<Fgl
 	}
 
 	int64 SamplerIndex;
-	if (JsonTextureObject->TryGetNumberField("sampler", SamplerIndex))
+	if (JsonTextureObject->TryGetNumberField(StringCast<TCHAR>("sampler"), SamplerIndex))
 	{
 		const TArray<TSharedPtr<FJsonValue>>* JsonSamplers;
 		// no samplers ?
-		if (!Root->TryGetArrayField("samplers", JsonSamplers))
+		if (!Root->TryGetArrayField(StringCast<TCHAR>("samplers"), JsonSamplers))
 		{
 			UE_LOG(LogGLTFRuntime, Warning, TEXT("No texture sampler defined!"));
 		}
@@ -1030,7 +1030,7 @@ UTexture2D* FglTFRuntimeParser::LoadTexture(const int32 TextureIndex, TArray<Fgl
 				if (JsonSamplerObject)
 				{
 					int64 MinFilter;
-					if (JsonSamplerObject->TryGetNumberField("minFilter", MinFilter))
+					if (JsonSamplerObject->TryGetNumberField(StringCast<TCHAR>("minFilter"), MinFilter))
 					{
 						if (MinFilter == 9728)
 						{
@@ -1038,7 +1038,7 @@ UTexture2D* FglTFRuntimeParser::LoadTexture(const int32 TextureIndex, TArray<Fgl
 						}
 					}
 					int64 MagFilter;
-					if (JsonSamplerObject->TryGetNumberField("magFilter", MagFilter))
+					if (JsonSamplerObject->TryGetNumberField(StringCast<TCHAR>("magFilter"), MagFilter))
 					{
 						if (MagFilter == 9728)
 						{
@@ -1046,7 +1046,7 @@ UTexture2D* FglTFRuntimeParser::LoadTexture(const int32 TextureIndex, TArray<Fgl
 						}
 					}
 					int64 WrapS;
-					if (JsonSamplerObject->TryGetNumberField("wrapS", WrapS))
+					if (JsonSamplerObject->TryGetNumberField(StringCast<TCHAR>("wrapS"), WrapS))
 					{
 						if (WrapS == 33071)
 						{
@@ -1058,7 +1058,7 @@ UTexture2D* FglTFRuntimeParser::LoadTexture(const int32 TextureIndex, TArray<Fgl
 						}
 					}
 					int64 WrapT;
-					if (JsonSamplerObject->TryGetNumberField("wrapT", WrapT))
+					if (JsonSamplerObject->TryGetNumberField(StringCast<TCHAR>("wrapT"), WrapT))
 					{
 						if (WrapT == 33071)
 						{
@@ -1219,7 +1219,7 @@ UMaterialInterface* FglTFRuntimeParser::LoadMaterial(const int32 Index, const Fg
 	const TArray<TSharedPtr<FJsonValue>>* JsonMaterials;
 
 	// no materials ?
-	if (!Root->TryGetArrayField("materials", JsonMaterials))
+	if (!Root->TryGetArrayField(StringCast<TCHAR>("materials"), JsonMaterials))
 	{
 		return nullptr;
 	}
@@ -1236,7 +1236,7 @@ UMaterialInterface* FglTFRuntimeParser::LoadMaterial(const int32 Index, const Fg
 	}
 
 
-	if (!JsonMaterialObject->TryGetStringField("name", MaterialName))
+	if (!JsonMaterialObject->TryGetStringField(StringCast<TCHAR>("name"), MaterialName))
 	{
 		MaterialName = "";
 	}

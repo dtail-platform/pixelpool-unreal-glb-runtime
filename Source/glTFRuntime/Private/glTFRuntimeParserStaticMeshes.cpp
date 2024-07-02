@@ -784,7 +784,7 @@ bool FglTFRuntimeParser::LoadStaticMeshes(TArray<UStaticMesh*>& StaticMeshes, co
 {
 	const TArray<TSharedPtr<FJsonValue>>* JsonMeshes;
 	// no meshes ?
-	if (!Root->TryGetArrayField("meshes", JsonMeshes))
+	if (!Root->TryGetArrayField(StringCast<TCHAR>("meshes"), JsonMeshes))
 	{
 		return false;
 	}
@@ -1043,7 +1043,8 @@ bool FglTFRuntimeParser::LoadStaticMeshIntoProceduralMeshComponent(const int32 M
 UStaticMesh* FglTFRuntimeParser::LoadStaticMeshByName(const FString Name, const FglTFRuntimeStaticMeshConfig& StaticMeshConfig)
 {
 	const TArray<TSharedPtr<FJsonValue>>* JsonMeshes;
-	if (!Root->TryGetArrayField("meshes", JsonMeshes))
+	if (!Root->TryGetArrayField(StringCast<TCHAR>("meshes"), JsonMeshes))
+	if (!Root->TryGetArrayField(StringCast<TCHAR>("meshes"), JsonMeshes))
 	{
 		return nullptr;
 	}
@@ -1056,7 +1057,7 @@ UStaticMesh* FglTFRuntimeParser::LoadStaticMeshByName(const FString Name, const 
 			return nullptr;
 		}
 		FString MeshName;
-		if (JsonMeshObject->TryGetStringField("name", MeshName))
+		if (JsonMeshObject->TryGetStringField(StringCast<TCHAR>("name"), MeshName))
 		{
 			if (MeshName == Name)
 			{
