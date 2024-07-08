@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/GCObject.h"
+#include "Runtime/CoreUObject/Public/UObject/GCObject.h"
 #include "Modules/ModuleManager.h"
 
 class UglTFDataAsset;
