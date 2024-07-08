@@ -27,33 +27,33 @@ public:
 private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	UMaterialInterface* OpaqueMaterial = nullptr;
+	TObjectPtr<UMaterialInterface> OpaqueMaterial = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	UMaterialInterface* TranslucentMaterial = nullptr;
+	TObjectPtr<UMaterialInterface> TranslucentMaterial = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	UMaterialInterface* TwoSidedMaterial = nullptr;
+	TObjectPtr<UMaterialInterface> TwoSidedMaterial = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	UMaterialInterface* TwoSidedTranslucentMaterial = nullptr;
+	TObjectPtr<UMaterialInterface> TwoSidedTranslucentMaterial = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	UMaterialInterface* MaskedMaterial = nullptr;
+	TObjectPtr<UMaterialInterface> MaskedMaterial = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	UMaterialInterface* TwoSidedMaskedMaterial = nullptr;
+	TObjectPtr<UMaterialInterface> TwoSidedMaskedMaterial = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	UMaterialInterface* SGOpaqueMaterial = nullptr;
+	TObjectPtr<UMaterialInterface> SGOpaqueMaterial = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	UMaterialInterface* SGTranslucentMaterial = nullptr;
+	TObjectPtr<UMaterialInterface> SGTranslucentMaterial = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	UMaterialInterface* SGTwoSidedMaterial = nullptr;
+	TObjectPtr<UMaterialInterface> SGTwoSidedMaterial = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	UMaterialInterface* SGTwoSidedTranslucentMaterial = nullptr;
+	TObjectPtr<UMaterialInterface> SGTwoSidedTranslucentMaterial = nullptr;
 	
 };
